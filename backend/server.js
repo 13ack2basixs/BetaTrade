@@ -1,20 +1,14 @@
 const express = require("express");
-const mysql = require('mysql');
 const cors = require('cors');
+const db = require('./config/database')
+
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const db = mysql.createConnection({
-    host:"localhost",
-    user: "root",
-    password: "",
-    database: "btradedb"
-})
-
 app.post('/signup', (req, res)=>{
-    const sql = "INSERT INTO login (`name`, `email`, `password`) VALUES (?)";
+    const sql = "INSERT INTO users (`name`, `email`, `password`) VALUES (?)";
     const values = [
         req.body.name,
         req.body.email,
@@ -29,7 +23,7 @@ app.post('/signup', (req, res)=>{
 })
 
 app.post('/login', (req, res)=>{
-    const sql = "SELECT * FROM login WHERE `email` = ? AND `password` = ?";
+    const sql = "SELECT * FROM users WHERE `email` = ? AND `password` = ?";
     
     db.query(sql, [req.body.email, req.body.password], (err, data)=>{
         if (err) {
@@ -43,6 +37,6 @@ app.post('/login', (req, res)=>{
     })
 })
 
-app.listen(8081, ()=>{
-    console.log("Listening");
+app.listen(8000, ()=>{
+    console.log("Server is listening at port 8000");
 })
