@@ -10,11 +10,11 @@ const db = mysql.createConnection({
     host:"localhost",
     user: "root",
     password: "",
-    database: "btradedb"
+    database: "betatrade"
 })
 
 app.post('/signup', (req, res)=>{
-    const sql = "INSERT INTO login (`name`, `email`, `password`) VALUES (?)";
+    const sql = "INSERT INTO users (`name`, `email`, `password`) VALUES (?)";
     const values = [
         req.body.name,
         req.body.email,
@@ -29,7 +29,7 @@ app.post('/signup', (req, res)=>{
 })
 
 app.post('/login', (req, res)=>{
-    const sql = "SELECT * FROM login WHERE `email` = ? AND `password` = ?";
+    const sql = "SELECT * FROM users WHERE `email` = ? AND `password` = ?";
     
     db.query(sql, [req.body.email, req.body.password], (err, data)=>{
         if (err) {
@@ -43,6 +43,6 @@ app.post('/login', (req, res)=>{
     })
 })
 
-app.listen(8081, ()=>{
-    console.log("Listening");
+app.listen(8000, ()=>{
+    console.log("Listening at port 8000");
 })
