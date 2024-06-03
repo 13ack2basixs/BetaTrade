@@ -1,17 +1,12 @@
 const express = require("express");
-const mysql = require('mysql');
 const cors = require('cors');
+const db = require('./config/database')
+
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const db = mysql.createConnection({
-    host:"localhost",
-    user: "root",
-    password: "",
-    database: "betatrade"
-})
 
 app.post('/signup', (req, res)=>{
     const sql = "INSERT INTO users (`name`, `email`, `password`) VALUES (?)";
@@ -44,5 +39,5 @@ app.post('/login', (req, res)=>{
 })
 
 app.listen(8000, ()=>{
-    console.log("Listening at port 8000");
+    console.log("Server is listening at port 8000");
 })
