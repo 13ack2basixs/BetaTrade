@@ -7,6 +7,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
 app.post('/signup', (req, res)=>{
     const sql = "INSERT INTO users (`name`, `email`, `password`) VALUES (?)";
     const values = [
