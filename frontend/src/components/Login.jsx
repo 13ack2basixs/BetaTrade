@@ -1,32 +1,33 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useUser } from './UserContext'; // Import useUser
 
 const Login = () => {
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const navigate = useNavigate();
+    const { login } = useUser(); // Get login function from the user context
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         
-        axios.post( 'https://betatradebackend.onrender.com/login', {email, password})
-        .then(result => {
-            console.log(result);
-            if(result.data === "Success"){
+        try {
+            const response = await axios.post('http://localhost:3001/login', { email, password });
+            console.log(response);
+            if (response.status === 200 && response.data.status === "Success") {
                 console.log("Login Success");
-                alert('Login successful!')
+                alert('Login successful!');
+                login(response.data.user); // Assuming the user object is returned in response.data.user
                 navigate('/home');
+            } else {
+                alert(response.data.status); // Display the error message from the server
             }
-            else{
-                alert('Incorrect password! Please try again.');
-            }
-        })
-        .catch(err => console.log(err));
+        } catch (err) {
+            console.log(err);
+        }
     }
-
 
     return (
         <div>
@@ -62,7 +63,6 @@ const Login = () => {
                         </div>
                         <button type="submit" className="btn btn-primary">Login</button>
                     </form>
-                    {/* TO add ' appostopee */}
                     <p className='container my-2'>Don&apos;t have an account?</p>
                     <Link to='/register' className="btn btn-secondary">Register</Link>
                 </div>
@@ -71,4 +71,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default Login;
