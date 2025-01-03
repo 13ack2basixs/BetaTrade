@@ -16,7 +16,7 @@ const app = express();
 app.use(bodyParser.json());
 
 const allowedOrigins = [
-    'https://frontend-two-rho-60.vercel.app'
+    'http://localhost:5173'
 ];
 
 const corsOptions = {
@@ -75,6 +75,7 @@ function connectAlpacaWebSocket() {
         if (data && data.bars) {
             console.log(`Data received for symbol ${currentSymbol}:`, data.bars);
             data.bars.forEach(bar => {
+                console.log('Sending bar to clients:', bar);
                 wss.clients.forEach(client => {
                     if (client.readyState === WebSocket.OPEN) {
                         client.send(JSON.stringify(bar));
@@ -130,6 +131,7 @@ connectAlpacaWebSocket();
 
 wss.on('connection', (ws) => {
     console.log('Client connected');
+    ws.send(JSON.stringify({ message: 'Hello from server' }));
     ws.on('message', (message) => {
         console.log(`Received message => ${message}`);
     });
@@ -139,35 +141,48 @@ wss.on('connection', (ws) => {
 });
 
 app.post('/trade', async (req, res) => {
-    const { userId, symbol, quantity, price, type } = req.body;
-    console.log(`Trade request received: userId=${userId}, symbol=${symbol}, quantity=${quantity}, price=${price}, type=${type}`);
+    const { userId, symbol, quantity, price, action } = req.body;
+    console.log('Received trade request data:', req.body);
+
+    if (!userId || !symbol || !quantity || !price) {
+        return res.status(400).json({ error: "Missing required fields: userId, symbol, quantity, or price" });
+    }
+
     try {
-        const trade = new TradeModel({ userId, symbol, quantity, price, type });
+        // Proceed with trade processing
+        const trade = new TradeModel({ userId, symbol, quantity, price, type: action });
         await trade.save();
+        console.log('Trade saved:', trade);
 
         let portfolio = await PortfolioModel.findOne({ userId });
         if (!portfolio) {
+            console.log('Portfolio not found, creating new portfolio for user:', userId);
             portfolio = new PortfolioModel({ userId, positions: [] });
         }
 
         const position = portfolio.positions.find(pos => pos.symbol === symbol);
         if (position) {
-            if (type === 'buy') {
+            if (action === 'Buy') {
+                const totalCost = (position.averagePrice * position.quantity) + (price * quantity);
                 position.quantity += quantity;
-                position.averagePrice = ((position.averagePrice * position.quantity) + (price * quantity)) / (position.quantity + quantity);
-            } else if (type === 'sell') {
+                position.averagePrice = totalCost / position.quantity;
+            } else if (action === 'Sell') {
                 position.quantity -= quantity;
-                if (position.quantity < 0) position.quantity = 0;
+                if (position.quantity <= 0) {
+                    portfolio.positions = portfolio.positions.filter(pos => pos.symbol !== symbol);
+                }
             }
         } else {
             portfolio.positions.push({ symbol, quantity, averagePrice: price });
         }
 
         await portfolio.save();
+        console.log('Portfolio updated:', portfolio);
+
         res.status(201).json(trade);
     } catch (err) {
         console.error('Error processing trade request:', err);
-        res.status(500).json(err.message);
+        res.status(500).json({ error: err.message });
     }
 });
 
@@ -176,9 +191,11 @@ app.get('/portfolio/:userId', async (req, res) => {
     console.log(`Portfolio request received for userId: ${userId}`);
     try {
         const portfolio = await PortfolioModel.findOne({ userId });
+        console.log('Fetched Portfolio:', portfolio);
         if (portfolio) {
             res.json(portfolio);
         } else {
+            console.log('Portfolio not found');
             res.status(404).json("Portfolio not found");
         }
     } catch (err) {
@@ -187,14 +204,46 @@ app.get('/portfolio/:userId', async (req, res) => {
     }
 });
 
+app.get('/transactions/:userId', async (req, res) => {
+    const { userId } = req.params;
+    console.log(`Transaction history request received for userId: ${userId}`);
+    try {
+        const transactions = await TradeModel.find({ userId });
+        console.log('Fetched Transactions:', transactions);
+        res.json(transactions);
+    } catch (err) {
+        console.error('Error fetching transaction history:', err);
+        res.status(500).json(err.message);
+    }
+});
+
 app.get('/market-status', async (req, res) => {
     console.log('Market status request received');
+    const options = {
+        method: 'GET',
+        url: 'https://paper-api.alpaca.markets/v2/clock',
+        headers: {
+            'APCA-API-KEY-ID': process.env.APCA_API_KEY_ID,
+            'APCA-API-SECRET-KEY': process.env.APCA_API_SECRET_KEY,
+            'Content-Type': 'application/json'
+        }
+    };
+
     try {
-        const response = await alpaca.getClock();
-        res.json(response);
+        const response = await axios.request(options);
+        console.log('Market Clock:', response.data);
+        const is_open = response.data.is_open;
+        res.json({ is_open });
     } catch (error) {
         console.error('Error fetching market status:', error.message);
-        res.status(500).json({ error: error.message });
+        console.error('Error details:', error);
+        if (error.response) {
+            res.status(error.response.status).json({ error: error.response.data });
+        } else if (error.request) {
+            res.status(500).json({ error: 'No response received from Alpaca API' });
+        } else {
+            res.status(500).json({ error: error.message });
+        }
     }
 });
 
@@ -236,6 +285,15 @@ app.get('/historical/:symbol', async (req, res) => {
     }
 });
 
+const testClient = new WebSocket('ws://localhost:3001');
+
+testClient.on('open', () => {
+    console.log('Test WebSocket client connected');
+    testClient.on('message', (data) => {
+        console.log('Test WebSocket client received data:', data);
+    });
+});
+
 app.post('/register', async (req, res) => {
     const { email, password } = req.body;
     console.log(`Register request received for email: ${email}`);
@@ -265,25 +323,26 @@ app.post('/login', async (req, res) => {
         if (user) {
             if (user.password === password) {
                 console.log(`Login successful for email: ${email}`);
-                res.json("Success");
+                res.json({ status: "Success", user });
             } else {
                 console.log(`Wrong password for email: ${email}`);
-                res.json("Wrong password");
+                res.json({ status: "Wrong password" });
             }
         } else {
             console.log(`No records found for email: ${email}`);
-            res.json("No records found!");
+                res.json({ status: "No records found!" });
         }
     } catch (err) {
         console.error('Error during login:', err.message);
-        res.status(500).json(err.message);
+        res.status(500).json({ status: "Error", message: err.message });
     }
 });
+
 
 app.get('/ping', (req, res) => {
     res.send('pong');
 });
 
-app.listen(3001, () => {
+server.listen(3001, () => {
     console.log("Server listening on http://127.0.0.1:3001");
 });
