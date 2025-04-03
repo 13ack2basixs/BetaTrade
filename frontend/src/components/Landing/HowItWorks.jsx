@@ -1,6 +1,3 @@
-// src/components/Landing/HowItWorks.jsx
-import React from "react";
-
 const HowItWorks = () => {
   return (
     <section id="how-it-works">

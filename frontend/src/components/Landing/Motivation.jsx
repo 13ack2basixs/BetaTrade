@@ -1,6 +1,3 @@
-// src/components/Landing/Motivation.jsx
-import React from "react";
-
 const Motivation = () => {
   return (
     <section id="motivation">

@@ -1,4 +1,3 @@
-import React from "react";
 import Features from "../components/Landing/Features";
 import HowItWorks from "../components/Landing/HowItWorks";
 import Motivation from "../components/Landing/Motivation";
