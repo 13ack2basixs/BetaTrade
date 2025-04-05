@@ -96,11 +96,10 @@ const Login = () => {
         event.preventDefault();
         
         try {
-            const response = await axios.post('http://localhost:3001/login', { email, password });
+            const response = await axios.post('http://localhost:3001/api/auth/login', { email, password });
             console.log(response);
             if (response.status === 200 && response.data.status === "Success") {
                 console.log("Login Success");
-                alert('Login successful!');
                 login(response.data.user); // Assuming the user object is returned in response.data.user
                 navigate('/home');
             } else {
