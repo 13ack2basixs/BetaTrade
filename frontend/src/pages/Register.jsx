@@ -2,6 +2,89 @@ import { useState } from 'react';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+
+const RegisterModal = styled.div`
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const FormCard = styled.div`
+  background: #fff;
+  border-radius: 10px;
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+`;
+
+const Heading = styled.h2`
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+`;
+
+const FormGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+`;
+
+const Label = styled.label`
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+`;
+
+const Input = styled.input`
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+
+  &:focus {
+    outline: none;
+    border-color: #333;
+  }
+`;
+
+const Button = styled.button`
+  padding: 0.75rem 1rem;
+  background-color: #111;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+
+  &:hover {
+    background-color: #333;
+  }
+`;
+
+const LoginText = styled.p`
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 1rem;
+
+  a {
+    color: #blue;
+    font-weight: 500;
+    text-decoration: underline;
+    
+  }
+`;
 
 const Register = () => {
     const [name, setName] = useState();
@@ -30,55 +113,58 @@ const Register = () => {
 
 
     return (
-        <div>
-            <h2>Create an account with us!</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="name" className="form-label">
-                        <strong >Name</strong>
-                    </label>
-                    <input 
-                        type="text"
-                        placeholder="Enter Name"
-                        className="form-control" 
-                        id="name" 
-                        onChange={(event) => setName(event.target.value)}
-                        required
-                    /> 
-                </div>
-                <div>
-                    <label htmlFor="email" className="form-label">
-                        <strong>Email Id</strong>
-                    </label>
-                    <input 
-                        type="email" 
-                        placeholder="Enter Email"
-                        className="form-control" 
-                        id="email" 
-                        onChange={(event) => setEmail(event.target.value)}
-                        required
-                    /> 
-                </div>
-                <div>
-                    <label htmlFor="password" className="form-label">
-                        <strong>Password</strong>
-                    </label>
-                    <input 
-                        type="password" 
-                        placeholder="Enter Password"
-                        className="form-control" 
-                        id="password" 
-                        onChange={(event) => setPassword(event.target.value)}
-                        required
-                    />
-                </div>
-                <button type="submit">Register</button>
-            </form>
-
-            <p>Already have an account ?</p>
-            <Link to='/login' className="btn btn-secondary">Login</Link>
-        </div>
+        <RegisterModal>
+            <FormCard>
+                <Heading>Create an account with us!</Heading>
+                <Form onSubmit={handleSubmit}>
+                    <FormGroup>
+                        <Label htmlFor="name" className="form-label">
+                            <strong >Name</strong>
+                        </Label>
+                        <Input 
+                            type="text"
+                            placeholder="Enter Name"
+                            className="form-control" 
+                            id="name" 
+                            onChange={(event) => setName(event.target.value)}
+                            required
+                        /> 
+                    </FormGroup>
+                    <FormGroup>
+                        <Label htmlFor="email" className="form-label">
+                            <strong>Email Id</strong>
+                        </Label>
+                        <Input 
+                            type="email" 
+                            placeholder="Enter Email"
+                            className="form-control" 
+                            id="email" 
+                            onChange={(event) => setEmail(event.target.value)}
+                            required
+                        /> 
+                    </FormGroup>
+                    <FormGroup>
+                        <Label htmlFor="password" className="form-label">
+                            <strong>Password</strong>
+                        </Label>
+                        <Input 
+                            type="password" 
+                            placeholder="Enter Password"
+                            className="form-control" 
+                            id="password" 
+                            onChange={(event) => setPassword(event.target.value)}
+                            required
+                        />
+                    </FormGroup>
+                    <Button type="submit">Register</Button>
+                </Form>
+                <LoginText>Already have an account?
+                    <Link to='/login'> Login</Link>
+                </LoginText>
+            </FormCard>
+        </RegisterModal>
+        
     )
 }
 
-export default Register
+export default Register;
