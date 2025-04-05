@@ -47,7 +47,7 @@ const Login = () => {
                             required
                         /> 
                     </div>
-                    <div className="mb-3 text-start">
+                    <div>
                         <label htmlFor="password" className="form-label">
                             <strong>Password</strong>
                         </label>

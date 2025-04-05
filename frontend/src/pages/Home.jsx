@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
-import MarketData from './MarketData';
-import { useUser } from './UserContext'; 
+import MarketData from '../components/Common/MarketData';
+import { useUser } from '../context/UserContext'; 
 import './Home.css'; 
 
 const Home = () => {

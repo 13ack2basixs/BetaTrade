@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useUser } from '../UserContext';
+import { useUser } from '../../context/UserContext';
 
 const Trade = ({ symbol, currentPrice }) => {
     console.log("Trade component is rendered");  // Debug log
