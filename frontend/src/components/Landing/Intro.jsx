@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { useNavigate } from "react-router-dom";
+
 
 const Section = styled.section`
   padding: 8rem 1.5rem 4rem;
@@ -23,7 +25,7 @@ const Subtext = styled.p`
   margin-bottom: 2rem;
 `;
 
-const JoinButton = styled.button`
+const RegisterButton = styled.button`
   background-color: #111111;
   color: #ffffff;
   border: none;
@@ -38,12 +40,18 @@ const JoinButton = styled.button`
 `;
 
 const Intro = () => {
+  const navigate = useNavigate();
+
+  const handleRegisterClick = () => {
+        navigate("/register");
+  }
+  
   return (
     <Section id="intro">
       <Container>
         <Heading>Welcome to BetaTrade</Heading>
         <Subtext>This app hopes to provide you with a safe space to explore investing, join us and have fun!</Subtext>
-        <JoinButton>Get Started</JoinButton>
+        <RegisterButton onClick={handleRegisterClick}>Get Started</RegisterButton>
       </Container>
     </Section>
   );
