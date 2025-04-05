@@ -5,11 +5,18 @@ import { useUser } from '../context/UserContext'; // Import useUser
 import styled from 'styled-components';
  
 const LoginModal = styled.div`
-  max-width: 400px;
-  margin: 5rem auto;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const FormCard = styled.div`
   background: #fff;
   border-radius: 10px;
   padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 400px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 `;
 
@@ -26,9 +33,15 @@ const Form = styled.form`
   gap: 1.5rem;
 `;
 
+const FormGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+`;
+
 const Label = styled.label`
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1rem;
   margin-bottom: 0.3rem;
 `;
 
@@ -63,12 +76,13 @@ const Button = styled.button`
 const RegisterText = styled.p`
   margin-top: 2rem;
   text-align: center;
-  font-size: 0.95rem;
+  font-size: 1rem;
 
   a {
-    color: #111;
+    color: #blue;
     font-weight: 500;
     text-decoration: underline;
+    
   }
 `;
 
@@ -99,35 +113,37 @@ const Login = () => {
 
     return (
         <LoginModal>
-            <Heading className=''>Welcome Back!</Heading>
-            <Form onSubmit={handleSubmit}>
-                <div>
-                    <Label htmlFor="email">Email</Label>
-                    <Input 
-                        type="email" 
-                        placeholder="Enter Email"
-                        className="form-control" 
-                        id="email" 
-                        onChange={(event) => setEmail(event.target.value)}
-                        required
-                    /> 
-                </div>
-                <div>
-                    <Label htmlFor="password">Password</Label>
-                    <Input 
-                        type="password" 
-                        placeholder="Enter Password"
-                        className="form-control" 
-                        id="password" 
-                        onChange={(event) => setPassword(event.target.value)}
-                        required
-                    />
-                </div>
-                <Button type="submit">Login</Button>
-            </Form>
-            <RegisterText>Don&apos;t have an account?
-            <Link to='/register'>Register</Link>
-            </RegisterText>
+            <FormCard>
+                <Heading className=''>Welcome Back!</Heading>
+                <Form onSubmit={handleSubmit}>
+                    <FormGroup>
+                        <Label htmlFor="email">Email</Label>
+                        <Input 
+                            type="email" 
+                            placeholder="Enter Email"
+                            className="form-control" 
+                            id="email" 
+                            onChange={(event) => setEmail(event.target.value)}
+                            required
+                        /> 
+                    </FormGroup>
+                    <FormGroup>
+                        <Label htmlFor="password">Password</Label>
+                        <Input 
+                            type="password" 
+                            placeholder="Enter Password"
+                            className="form-control" 
+                            id="password" 
+                            onChange={(event) => setPassword(event.target.value)}
+                            required
+                        />
+                    </FormGroup>
+                    <Button type="submit">Login</Button>
+                </Form>
+                <RegisterText>Don&apos;t have an account?
+                    <Link to='/register'> Register</Link>
+                </RegisterText>
+            </FormCard>
         </LoginModal>
     )
 }
