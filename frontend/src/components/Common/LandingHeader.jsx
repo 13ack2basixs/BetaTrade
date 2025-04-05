@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import LoginButton from '../Landing/LoginButton';
+import AppLogo from '../Common/AppLogo';
 
 const HeaderContainer = styled.header`
   position: fixed;
@@ -18,14 +19,6 @@ const InnerContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`;
-
-const Logo = styled.a`
-  text-decoration: none;
-  color: inherit;
-  font-size: 1.4rem;
-  font-weight: 600;
-  flex: 1;
 `;
 
 const Nav = styled.nav`
@@ -64,7 +57,7 @@ const LandingHeader = () => {
     return (
         <HeaderContainer>
           <InnerContainer>
-            <Logo href="/">BetaTrade</Logo>
+            <AppLogo />
             <Nav>
                 {navItems.map(item => (
                   <a key={item.href} href={item.href}>{item.name}</a>
