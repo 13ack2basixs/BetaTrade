@@ -114,14 +114,13 @@ const Login = () => {
     return (
         <LoginModal>
             <FormCard>
-                <Heading className=''>Welcome Back!</Heading>
+                <Heading>Welcome Back!</Heading>
                 <Form onSubmit={handleSubmit}>
                     <FormGroup>
                         <Label htmlFor="email">Email</Label>
                         <Input 
                             type="email" 
                             placeholder="Enter Email"
-                            className="form-control" 
                             id="email" 
                             onChange={(event) => setEmail(event.target.value)}
                             required
@@ -132,7 +131,6 @@ const Login = () => {
                         <Input 
                             type="password" 
                             placeholder="Enter Password"
-                            className="form-control" 
                             id="password" 
                             onChange={(event) => setPassword(event.target.value)}
                             required

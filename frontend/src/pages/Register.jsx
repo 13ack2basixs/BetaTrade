@@ -118,39 +118,30 @@ const Register = () => {
                 <Heading>Create an account with us!</Heading>
                 <Form onSubmit={handleSubmit}>
                     <FormGroup>
-                        <Label htmlFor="name" className="form-label">
-                            <strong >Name</strong>
-                        </Label>
+                        <Label htmlFor="name">Name</Label>
                         <Input 
                             type="text"
                             placeholder="Enter Name"
-                            className="form-control" 
                             id="name" 
                             onChange={(event) => setName(event.target.value)}
                             required
                         /> 
                     </FormGroup>
                     <FormGroup>
-                        <Label htmlFor="email" className="form-label">
-                            <strong>Email Id</strong>
-                        </Label>
+                        <Label htmlFor="email">Email</Label>
                         <Input 
                             type="email" 
-                            placeholder="Enter Email"
-                            className="form-control" 
+                            placeholder="Enter Email Address"
                             id="email" 
                             onChange={(event) => setEmail(event.target.value)}
                             required
                         /> 
                     </FormGroup>
                     <FormGroup>
-                        <Label htmlFor="password" className="form-label">
-                            <strong>Password</strong>
-                        </Label>
+                        <Label htmlFor="password">Password</Label>
                         <Input 
                             type="password" 
                             placeholder="Enter Password"
-                            className="form-control" 
                             id="password" 
                             onChange={(event) => setPassword(event.target.value)}
                             required
