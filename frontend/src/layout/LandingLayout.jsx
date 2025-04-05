@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const StyledLandingLayout = styled.div`
   background: linear-gradient(to right, #fdf4ff, #f3e8ff);
@@ -13,6 +14,10 @@ const LandingLayout = ({ children }) => {
       <main style={{ flex: 1 }}>{children}</main>
     </StyledLandingLayout>
   );
+};
+
+LandingLayout.propTypes = {
+  children: PropTypes.string.isRequired,
 };
 
 export default LandingLayout;
