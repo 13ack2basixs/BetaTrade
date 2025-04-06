@@ -4,7 +4,7 @@ import axios from 'axios';
 import Chart from 'chart.js/auto';
 import SearchBar from './SearchBar';
 import styled from 'styled-components';
-import placeholder from '../../assets/placeholderlinegraph.png';
+import useMarketData from '../../hooks/useMarketData';
 
 const OuterContainer = styled.div`
   display: flex;
@@ -26,13 +26,16 @@ const RightSpacer = styled.div`
 
 const ChartContainer = styled.div`
   width: 100%;
-  height: 400px;
+  height: 600px;
   position: relative;
 `;
 
 const StockChart = () => {
   const [symbol, setSymbol] = useState('');
-  const [data, setData] = useState([]);
+  const [marketOpen] = useState(true); // or replace with actual logic
+  const { data, currentPrice } = useMarketData(symbol, marketOpen, (updated) => {
+    renderChart(updated, symbol);
+  });
   const chartRef = useRef(null);
   const chartInstanceRef = useRef(null);
 
@@ -40,10 +43,9 @@ const StockChart = () => {
     try {
       const response = await axios.get(`http://localhost:3001/api/market/historical/${ticker}`);
       const bars = response.data.bars[ticker] || [];
-      setData(bars);
+      renderChart(bars, ticker);
     } catch (error) {
       console.error('Error fetching stock data:', error);
-      setData([]);
     }
   };
 
@@ -90,6 +92,7 @@ const StockChart = () => {
       <LeftPanel>
         <SearchBar onSearch={handleSearch} />
         {symbol && <h3>Viewing: {symbol}</h3>}
+        {currentPrice && <h4>Current Price: ${currentPrice.toFixed(2)}</h4>}
         <ChartContainer>
             <canvas ref={chartRef} />
         </ChartContainer>
