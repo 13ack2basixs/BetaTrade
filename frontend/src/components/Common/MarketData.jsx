@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Chart from 'chart.js/auto';
 import axios from 'axios';
-import Trade from './Trading/Trade';
+import Trade from '../Market/Trade';
+import PropTypes from 'prop-types';
 
 function MarketData({ symbol }) {
     const [data, setData] = useState([]);
@@ -146,6 +147,10 @@ function MarketData({ symbol }) {
         </div>
     );
     
+}
+
+MarketData.propTypes = {
+    symbol: PropTypes.string.isRequired,
 }
 
 export default MarketData;

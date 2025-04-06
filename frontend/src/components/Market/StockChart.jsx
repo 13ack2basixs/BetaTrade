@@ -25,7 +25,7 @@ const RightSpacer = styled.div`
 `;
 
 const ChartContainer = styled.div`
-  width: 800px;
+  width: 100%;
   height: 400px;
   position: relative;
 `;
@@ -38,7 +38,7 @@ const StockChart = () => {
 
   const fetchStockData = async (ticker) => {
     try {
-      const response = await axios.get(`http://localhost:3001/historical/${ticker}`);
+      const response = await axios.get(`http://localhost:3001/api/market/historical/${ticker}`);
       const bars = response.data.bars[ticker] || [];
       setData(bars);
     } catch (error) {
@@ -47,7 +47,7 @@ const StockChart = () => {
     }
   };
 
-  const renderChart = (chartData) => {
+  const renderChart = (chartData, symbol) => {
     if (!chartData.length || !chartRef.current) return;
 
     if (chartInstanceRef.current) {
@@ -75,10 +75,10 @@ const StockChart = () => {
   };
 
   useEffect(() => {
-    if (data.length) {
-      renderChart(data);
+    if (data.length && symbol) {
+      renderChart(data, symbol);
     }
-  });
+  }, [data, symbol]);
 
   const handleSearch = (ticker) => {
     setSymbol(ticker);
@@ -91,15 +91,7 @@ const StockChart = () => {
         <SearchBar onSearch={handleSearch} />
         {symbol && <h3>Viewing: {symbol}</h3>}
         <ChartContainer>
-            {data.length === 0 ? (
-                <img
-                    src={placeholder}
-                    alt="placeholder"
-                    style={{ width: '120%', height: 'auto' }}
-                />
-            ) : (
-                <canvas ref={chartRef} style={{ width: '100%', height: '100%' }} />
-            )}
+            <canvas ref={chartRef} />
         </ChartContainer>
       </LeftPanel>
       <RightSpacer />

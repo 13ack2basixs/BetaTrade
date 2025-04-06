@@ -8,7 +8,7 @@ const useMarketData = (symbol, marketOpen, renderChart) => {
 
     useEffect(() => {
         if (symbol) {
-            axios.get(`http://localhost:3001/historical/${symbol}`)
+            axios.get(`http://localhost:3001/api/market/historical/${symbol}`)
                 .then(response => {
                     const bars = response.data.bars[symbol] || [];
                     setData(bars);
@@ -17,7 +17,7 @@ const useMarketData = (symbol, marketOpen, renderChart) => {
                     }
                 });
 
-            axios.post('http://localhost:3001/subscribe', { symbol }).catch(console.error);
+            axios.post('http://localhost:3001/api/subscribe', { symbol }).catch(console.error);
         }
     }, [symbol]);
 
