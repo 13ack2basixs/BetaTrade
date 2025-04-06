@@ -101,7 +101,7 @@ const Login = () => {
             if (response.status === 200 && response.data.status === "Success") {
                 console.log("Login Success");
                 login(response.data.user); // Assuming the user object is returned in response.data.user
-                navigate('/home');
+                navigate('/dashboard');
             } else {
                 alert(response.data.status); // Display the error message from the server
             }

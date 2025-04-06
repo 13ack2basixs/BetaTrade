@@ -32,10 +32,10 @@ const RightSection = styled.div`
 `;
 
 const navItems = [
-    { name: 'Dashboard', href: '#Dashboard'},
-    { name: 'Market', href: '#intro' },
-    { name: 'News', href: '#motivation'},
-    { name: 'Resources', href: '#features'},
+    { name: 'Dashboard', href: '/dashboard'},
+    { name: 'Market', href: '/market' },
+    { name: 'News', href: '#'},
+    { name: 'Resources', href: '#'},
 ]
 
 const UserHeader = () => {
