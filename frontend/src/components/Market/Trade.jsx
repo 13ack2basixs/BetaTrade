@@ -1,16 +1,76 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useUser } from '../../context/UserContext';
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
+
+const OrderForm = styled.form`
+  
+`;
+
+const Title = styled.h4`
+  font-size: 1.5em;
+`;
+
+const DropdownContainer = styled.div`
+  margin: 10px 0;
+`;
+
+const Dropdown = styled.select`
+  padding: 0.5rem 0.75rem;
+  width: 200px;
+  border: 1px solid #E8EAED;
+  border-radius: 5px;
+  background: white;
+  box-shadow: 0 1px 3px -2px #9098A9;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 16px;
+`;
+
+const InputContainer = styled.div`
+  margin: 10px 0;
+`;
+
+const Input = styled.input`
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  margin-right: 0.5rem;
+  width: 100px;
+  box-shadow: 0 1px 3px -2px #9098A9;
+
+  &:focus {
+    outline: none;
+    border-color: #333;
+  }
+`;
+
+const SubmitButton = styled.button`
+  background-color: #111111;
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+
+  &:hover {
+    background-color: #333333;
+  }
+`;
 
 const Trade = ({ symbol, currentPrice }) => {
-    console.log("Trade component is rendered");  // Debug log
+    console.log("Trade component is rendered");
 
     const { user } = useUser();
     const [formData, setFormData] = useState({
         symbol: symbol,
-        quantity: 1,
-        orderType: 'Market',
-        action: 'Buy',
+        quantity: '',
+        orderType: '',
+        action: '',
     });
 
     useEffect(() => {
@@ -29,7 +89,7 @@ const Trade = ({ symbol, currentPrice }) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmitOrder = async (e) => {
         e.preventDefault();
 
         if (!user || !user._id) {
@@ -40,7 +100,7 @@ const Trade = ({ symbol, currentPrice }) => {
         console.log('Submitting trade with data:', { 
             ...formData, 
             userId: user._id,  // Use user._id instead of user.id
-            price: currentPrice,
+            price: Number(currentPrice),
             quantity: Number(formData.quantity),
         });
 
@@ -57,49 +117,52 @@ const Trade = ({ symbol, currentPrice }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} style={{ padding: '20px', background: '#f8f9fa', borderRadius: '10px', width: '300px' }}>
-            <h4>Trade {symbol}</h4>
-            <div className="mb-3">
-                <label className="form-label">Action</label>
-                <select
+        <OrderForm onSubmit={handleSubmitOrder}>
+            <Title>Trade {symbol}</Title>
+            <DropdownContainer>
+                <Dropdown
                     name="action"
                     value={formData.action}
                     onChange={handleChange}
                     className="form-select"
                     required
                 >
+                    <option value="" disabled>Action</option>
                     <option value="Buy">Buy</option>
                     <option value="Sell">Sell</option>
-                </select>
-            </div>
-            <div className="mb-3">
-                <label className="form-label">Order Type</label>
-                <select
+                </Dropdown>
+            </DropdownContainer>
+            <DropdownContainer>
+                <Dropdown
                     name="orderType"
                     value={formData.orderType}
                     onChange={handleChange}
                     className="form-select"
                     required
                 >
+                    <option value="" disabled>Order Type</option>
                     <option value="Market">Market</option>
-                </select>
-            </div>
-            <div className="mb-3">
-                <label className="form-label">Quantity</label>
-                <input
+                </Dropdown>
+            </DropdownContainer>
+            <InputContainer>
+                <Input
                     type="number"
                     name="quantity"
                     value={formData.quantity}
                     onChange={handleChange}
                     className="form-control"
-                    min="1"
+                    placeholder="Quantity"
                     required
                 />
-            </div>
-            <button type="submit" className="btn btn-primary">Submit Order</button>
-        </form>
+            </InputContainer>
+            <SubmitButton type="submit">Submit Order</SubmitButton>
+        </OrderForm>
     );
 };
 
+Trade.propTypes = {
+  symbol: PropTypes.string.isRequired,
+  currentPrice: PropTypes.string.isRequired,
+};
 
 export default Trade;

@@ -3,6 +3,7 @@ import { useRef, useEffect, useState } from 'react';
 import axios from 'axios';
 import Chart from 'chart.js/auto';
 import SearchBar from './SearchBar';
+import Trade from './Trade';
 import styled from 'styled-components';
 import useMarketData from '../../hooks/useMarketData';
 
@@ -18,6 +19,14 @@ const LeftPanel = styled.div`
   padding-right: 1rem;
   display: flex;
   flex-direction: column;
+`;
+
+const Symbol = styled.h3`
+  font-size: 1.5em;
+`;
+
+const CurrentPrice = styled.h2`
+  font-size: 1.75em;
 `;
 
 const ViewModeContainer = styled.div`
@@ -103,8 +112,8 @@ const StockChart = () => {
     <OuterContainer>
       <LeftPanel>
         <SearchBar onSearch={handleSearch} />
-        {symbol && <h3>Viewing: {symbol}</h3>}
-        {currentPrice && <h4>Current Price: ${currentPrice.toFixed(2)}</h4>}
+        {symbol && <Symbol>{symbol}</Symbol>}
+        {currentPrice && <CurrentPrice>${currentPrice.toFixed(2)}USD</CurrentPrice>}
         <ViewModeContainer>
           <ViewMode onClick={() => setTimeframe('live')}>Live: 1Min</ViewMode>
           <ViewMode onClick={() => setTimeframe('daily')}>1D</ViewMode>
@@ -116,7 +125,9 @@ const StockChart = () => {
             <canvas ref={chartRef} />
         </ChartContainer>
       </LeftPanel>
-      <RightSpacer />
+      <RightSpacer>
+        <Trade symbol={symbol} currentPrice={currentPrice?.toString() || "0"} />
+      </RightSpacer>
     </OuterContainer>
   );
 };
