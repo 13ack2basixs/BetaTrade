@@ -24,12 +24,18 @@ const trade = async (req, res) => {
         const position = portfolio.positions.find(pos => pos.symbol === symbol);
         if (position) {
             if (action === 'Buy') {
+                const newQuantity = position.quantity + quantity;
                 const totalCost = (position.averagePrice * position.quantity) + (price * quantity);
-                position.quantity += quantity;
-                position.averagePrice = totalCost / position.quantity;
+                position.averagePrice = totalCost / newQuantity;
+                position.quantity = newQuantity;
             } else if (action === 'Sell') {
+                if (quantity > position.quantity) {
+                    return res.status(400).json({ error: "Not enough shares to sell." });
+                }
+
                 position.quantity -= quantity;
-                if (position.quantity <= 0) {
+
+                if (position.quantity === 0) {
                     portfolio.positions = portfolio.positions.filter(pos => pos.symbol !== symbol);
                 }
             }

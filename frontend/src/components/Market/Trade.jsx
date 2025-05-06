@@ -105,7 +105,7 @@ const Trade = ({ symbol, currentPrice }) => {
         });
 
         try {
-            const response = await axios.post('http://localhost:3001/trade', { 
+            const response = await axios.post('http://localhost:3001/api/trade', { 
                 ...formData, 
                 userId: user._id,
                 price: currentPrice
