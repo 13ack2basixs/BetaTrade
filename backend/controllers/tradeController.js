@@ -53,4 +53,13 @@ const trade = async (req, res) => {
     }
 };
 
-module.exports = { trade };
+const getAllTrades = async (req, res) => {
+    try {
+        const allTrades = await TradeModel.find();
+        res.json(allTrades);
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
+
+module.exports = { trade, getAllTrades };

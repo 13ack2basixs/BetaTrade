@@ -1,4 +1,7 @@
 import styled from "styled-components";
+import axios from 'axios';
+import { useUser } from '../../context/UserContext';
+import { useState, useEffect } from 'react';
 
 const Card = styled.div`
   background: #fff;
@@ -8,13 +11,114 @@ const Card = styled.div`
   text-align: center;
 `;
 
+const Title = styled.h4`
+  font-size: 1.3em;
+`;
+
+const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 1rem;
+`;
+
+const THead = styled.thead`
+  background: #2d2d60;
+  color: white;
+  font-size: 0.95rem;
+`;
+
+const HeaderRow = styled.tr`
+  background: none;
+`;
+
+const Header = styled.th`
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-align: center;
+`;
+
+const Row = styled.tr`
+  &:nth-child(even) {
+    background-color: #f8f8f8;
+  }
+
+  &:nth-child(odd) {
+    background-color: #ffffff;
+  }
+
+  &:hover {
+    background-color: #f1f1f1;
+  }
+`;
+
+const Cell = styled.td`
+  padding: 1rem;
+  font-size: 0.95rem;
+  color: #333;
+  border-bottom: 1px solid #eee;
+`;
+
+
 const OrderHistoryCard = () => {
+  const { user } = useUser();
+  const [trades, setTrades] = useState([]);
+
+  useEffect(() => {
+    const getUserTrades = async () => {
+      if (!user || !user._id) return;
+
+      try {
+        const res = await axios.get('http://localhost:3001/api/trade/');
+        const allTrades = res.data;
+        const userTrades = allTrades.filter(t => t.userId === user._id);
+        setTrades(userTrades);
+      } catch (err) {
+        console.error("Failed to fetch trades:", err);
+      }
+    };
+
+    getUserTrades();
+  }, [user])
+
   return (
     <Card>
-      <h3>Order History</h3>
-      <p>Coming soon: order history</p>
+      <Title>Order History</Title>
+      <Table>
+        <THead>
+          <HeaderRow>
+            <Header>S.No</Header>
+            <Header>Symbol</Header>
+            <Header>Type</Header>
+            <Header>Qty</Header>
+            <Header>Price</Header>
+            <Header>Filled Date</Header>
+          </HeaderRow>
+        </THead>
+        <tbody>
+          {trades.length === 0 ? (
+            <Row><Cell colSpan="6">No trades found.</Cell></Row>
+          ) : (
+            trades.map((trade, index) => (
+              <Row key={index}>
+                <Cell>{index + 1}</Cell>
+                <Cell>{trade.symbol}</Cell>
+                <Cell>{trade.type}</Cell>
+                <Cell>{trade.quantity}</Cell>
+                <Cell>${Number(trade.price).toFixed(2)}</Cell>
+                <Cell>{new Date(trade.date).toLocaleString()}</Cell>
+              </Row>
+            ))
+          )}
+        </tbody>
+      </Table>
+
     </Card>
   );
 };
 
 export default OrderHistoryCard;
+
