@@ -101,4 +101,5 @@ const Trade = ({ symbol, currentPrice }) => {
     );
 };
 
+
 export default Trade;

@@ -16,15 +16,34 @@ const getMarketStatus = async (req, res) => {
 
 const getHistoricalData = async (req, res) => {
     const { symbol } = req.params;
+    const { timeframe = 'daily' } = req.query;
+    let tf;
     const endDate = new Date().toISOString();
     const startDate = new Date();
-    startDate.setFullYear(startDate.getFullYear() - 3);
+
+    // Set view mode 
+    if (timeframe === 'live') {
+        tf = '1Min'; 
+        startDate.setMinutes(startDate.getMinutes() - 50);
+    } else if (timeframe === 'weekly') {
+        tf = '1Week';
+        startDate.setDate(startDate.getDate() - 7 * 50);
+    } else if (timeframe === 'monthly') {
+        tf = '1Month'; 
+        startDate.setMonth(startDate.getMonth() - 50);
+    } else if (timeframe === 'yearly') {
+        tf = '12Month'; 
+        startDate.setFullYear(startDate.getFullYear() - 10);
+    } else {
+        tf = '1Day'; 
+        startDate.setDate(startDate.getDate() - 50);
+    }
 
     try {
         const response = await axios.get('https://data.alpaca.markets/v2/stocks/bars', {
             params: {
                 symbols: symbol,
-                timeframe: '1Day',
+                timeframe: tf,
                 start: startDate.toISOString(),
                 end: endDate,
                 limit: 1000,

@@ -20,6 +20,16 @@ const LeftPanel = styled.div`
   flex-direction: column;
 `;
 
+const ViewModeContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 15px;
+`;
+
+const ViewMode = styled.button`
+  display: inline-block;
+`;
+
 const RightSpacer = styled.div`
   width: 20vw;
 `;
@@ -33,7 +43,8 @@ const ChartContainer = styled.div`
 const StockChart = () => {
   const [symbol, setSymbol] = useState('');
   const [marketOpen] = useState(true); // or replace with actual logic
-  const { data, currentPrice } = useMarketData(symbol, marketOpen, (updated) => {
+  const [timeframe, setTimeframe] = useState("daily");
+  const { data, currentPrice } = useMarketData(symbol, timeframe, marketOpen, (updated) => {
     renderChart(updated, symbol);
   });
   const chartRef = useRef(null);
@@ -44,6 +55,7 @@ const StockChart = () => {
       const response = await axios.get(`http://localhost:3001/api/market/historical/${ticker}`);
       const bars = response.data.bars[ticker] || [];
       renderChart(bars, ticker);
+      console.log("Stock chart rendered");
     } catch (error) {
       console.error('Error fetching stock data:', error);
     }
@@ -93,6 +105,13 @@ const StockChart = () => {
         <SearchBar onSearch={handleSearch} />
         {symbol && <h3>Viewing: {symbol}</h3>}
         {currentPrice && <h4>Current Price: ${currentPrice.toFixed(2)}</h4>}
+        <ViewModeContainer>
+          <ViewMode onClick={() => setTimeframe('live')}>Live: 1Min</ViewMode>
+          <ViewMode onClick={() => setTimeframe('daily')}>1D</ViewMode>
+          <ViewMode onClick={() => setTimeframe('weekly')}>1W</ViewMode>
+          <ViewMode onClick={() => setTimeframe('monthly')}>1M</ViewMode>
+          <ViewMode onClick={() => setTimeframe('yearly')}>1Y</ViewMode>
+        </ViewModeContainer>
         <ChartContainer>
             <canvas ref={chartRef} />
         </ChartContainer>

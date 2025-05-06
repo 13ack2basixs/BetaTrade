@@ -18,14 +18,17 @@ function connectAlpacaWebSocket(wss) {
 
     alpacaSocket.onmessage = (event) => {
         const data = JSON.parse(event.data);
+        console.log('Raw message from Alpaca:', data);
+
         if (data[0]?.msg === 'authenticated') {
             isAuthenticated = true;
             console.log('Alpaca authenticated and ready to subscribe.');
         }
-        if (data?.bars) {
+        if (data[0]?.T === 'b') {
+            console.log('Bar received:', data[0]);
             wss.clients.forEach(client => {
                 if (client.readyState === WebSocket.OPEN) {
-                    client.send(JSON.stringify(data.bars));
+                    client.send(JSON.stringify(data[0]));
                 }
             });
         }
