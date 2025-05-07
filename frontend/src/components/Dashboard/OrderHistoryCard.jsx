@@ -20,24 +20,20 @@ const Table = styled.table`
   border-collapse: collapse;
   border-radius: 10px;
   overflow: hidden;
-  margin-top: 1rem;
 `;
 
 const THead = styled.thead`
   background: #2d2d60;
   color: white;
-  font-size: 0.95rem;
 `;
 
 const HeaderRow = styled.tr`
-  background: none;
 `;
 
 const Header = styled.th`
   padding: 1rem;
   text-align: left;
   font-weight: 600;
-  font-size: 0.95rem;
   text-align: center;
 `;
 
@@ -57,8 +53,6 @@ const Row = styled.tr`
 
 const Cell = styled.td`
   padding: 1rem;
-  font-size: 0.95rem;
-  color: #333;
   border-bottom: 1px solid #eee;
 `;
 
