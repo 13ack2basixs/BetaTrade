@@ -11,6 +11,7 @@ const tradeRoutes = require('./routes/tradeRoutes');
 const portfolioRoutes = require('./routes/portfolioRoutes');
 const marketRoutes = require('./routes/marketRoutes');
 const subscribeRoutes = require('./routes/subscribeRoutes');
+const companyProfileRoutes = require('./routes/companyProfileRoutes');
 
 const app = express();
 
@@ -23,5 +24,6 @@ app.use('/api/trade', tradeRoutes);
 app.use('/api/portfolio', portfolioRoutes);
 app.use('/api/market', marketRoutes);
 app.use('/api', subscribeRoutes);
+app.use('/api/profile', companyProfileRoutes);
 
 module.exports = app;

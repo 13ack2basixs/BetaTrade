@@ -23,6 +23,12 @@ const LeftPanel = styled.div`
 
 const Symbol = styled.h3`
   font-size: 1.5em;
+  margin-bottom: 0;
+`;
+
+const SectorandIndustry = styled.div`
+  display: flex;
+  flex-direction: row;
 `;
 
 const CurrentPrice = styled.h2`
@@ -51,6 +57,7 @@ const ChartContainer = styled.div`
 
 const StockChart = () => {
   const [symbol, setSymbol] = useState('');
+  const [profile, setProfile] = useState('');
   const [marketOpen] = useState(true); // or replace with actual logic
   const [timeframe, setTimeframe] = useState("daily");
   const { data, currentPrice } = useMarketData(symbol, timeframe, marketOpen, (updated) => {
@@ -69,6 +76,17 @@ const StockChart = () => {
       console.error('Error fetching stock data:', error);
     }
   };
+
+  const fetchTickerProfile = async (ticker) => {
+    try {
+      const response = await axios.get(`http://localhost:3001/api/profile/${ticker}`);
+      const profile = response.data[0];
+      setProfile(profile);
+      console.log("Ticker profile rendered");
+    } catch (error) {
+      console.error('Error fetching ticker profile:', error);
+    }
+  }
 
   const renderChart = (chartData, symbol) => {
     if (!chartData.length || !chartRef.current) return;
@@ -106,6 +124,7 @@ const StockChart = () => {
   const handleSearch = (ticker) => {
     setSymbol(ticker);
     fetchStockData(ticker);
+    fetchTickerProfile(ticker);
   };
 
   return (
@@ -113,6 +132,13 @@ const StockChart = () => {
       <LeftPanel>
         <SearchBar onSearch={handleSearch} />
         {symbol && <Symbol>{symbol}</Symbol>}
+        {symbol && <span>{profile.companyName}</span> }
+        {symbol && <SectorandIndustry>
+            <span>{profile.sector}</span> &nbsp;
+            <span>•</span> &nbsp;
+            <span>{profile.industry}</span>
+          </SectorandIndustry> }
+        {symbol && <a href= {`${profile.website}`} target="_blank" rel="noopener noreferrer">{symbol}&apos;s Website</a> }
         {currentPrice && <CurrentPrice>${currentPrice.toFixed(2)}USD</CurrentPrice>}
         <ViewModeContainer>
           <ViewMode onClick={() => setTimeframe('live')}>Live: 1Min</ViewMode>
