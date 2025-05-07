@@ -135,7 +135,7 @@ const StockChart = () => {
         {symbol && <span>{profile.companyName}</span> }
         {symbol && <SectorandIndustry>
             <span>{profile.sector}</span> &nbsp;
-            <span>•</span> &nbsp;
+            <span>•</span>
             <span>{profile.industry}</span>
           </SectorandIndustry> }
         {symbol && <a href= {`${profile.website}`} target="_blank" rel="noopener noreferrer">{symbol}&apos;s Website</a> }

@@ -39,15 +39,20 @@ const SearchForm = styled.form`
 const SearchBar = ({ onSearch }) => {
   const [input, setInput] = useState('');
 
+  const handleType = (e) => {
+    e.preventDefault();
+      setInput(e.target.value.toUpperCase());
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (input.trim() !== '') {
-      onSearch(input.trim().toUpperCase());
+      onSearch(input.trim());
     }
   };
 
   return (
-    <SearchForm onSubmit={handleSubmit} style={{ marginBottom: '1rem' }}>
+    <SearchForm onChange={handleType} onSubmit={handleSubmit} style={{ marginBottom: '1rem' }}>
       <Input
         type="text"
         value={input}
