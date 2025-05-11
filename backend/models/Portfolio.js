@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 const PortfolioSchema = new mongoose.Schema({
     userId: mongoose.Schema.Types.ObjectId,
+    totalCash: Number,
+    totalAssets: Number,
     positions: [
         {
             symbol: String,

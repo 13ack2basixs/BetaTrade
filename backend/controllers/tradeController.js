@@ -16,34 +16,51 @@ const trade = async (req, res) => {
         console.log('Trade saved:', trade);
 
         let portfolio = await PortfolioModel.findOne({ userId });
-        if (!portfolio) {
-            console.log('Portfolio not found, creating new portfolio for user:', userId);
-            portfolio = new PortfolioModel({ userId, positions: [] });
-        }
-
         const position = portfolio.positions.find(pos => pos.symbol === symbol);
         if (position) {
             if (action === 'Buy') {
+                if (portfolio.totalCash < price * quantity) {
+                    return res.status(400).json({ error: "Insufficient funds to buy." });
+                }
+
+                // Update new average price and quantity
                 const newQuantity = position.quantity + quantity;
                 const totalCost = (position.averagePrice * position.quantity) + (price * quantity);
                 position.averagePrice = totalCost / newQuantity;
                 position.quantity = newQuantity;
+
+                // Update totalCash and totalAssets
+                portfolio.totalCash -= (price * quantity);
+                portfolio.totalAssets += price * quantity;
             } else if (action === 'Sell') {
                 if (quantity > position.quantity) {
                     return res.status(400).json({ error: "Not enough shares to sell." });
                 }
 
+                // Update totalCash and totalAssets
                 position.quantity -= quantity;
+                portfolio.totalCash += (price * quantity);
+                portfolio.totalAssets -= position.averagePrice * quantity; 
 
                 if (position.quantity === 0) {
                     portfolio.positions = portfolio.positions.filter(pos => pos.symbol !== symbol);
                 }
             }
         } else {
-            portfolio.positions.push({ symbol, quantity, averagePrice: price });
+            if (action === 'Buy') {
+                if (portfolio.totalCash < price * quantity) {
+                    return res.status(400).json({ error: "Insufficient funds to buy." });
+                }
+                
+                portfolio.positions.push({ symbol, quantity, averagePrice: price });
+                portfolio.totalCash -= price * quantity;
+                portfolio.totalAssets += price * quantity;
+            } else if (action === 'Sell') {
+                return res.status(400).json({ error: "Cannot sell a stock you don't own." });
+            }
         }
 
-        await portfolio.save();
+        await portfolio.save(); 
         console.log('Portfolio updated:', portfolio);
 
         res.status(201).json(trade);

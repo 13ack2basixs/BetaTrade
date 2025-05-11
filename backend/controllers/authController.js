@@ -1,4 +1,5 @@
 const FormDataModel = require('../models/FormData');
+const PortfolioModel = require('../models/Portfolio');
 
 const register = async (req, res) => {
     const { email, password } = req.body;
@@ -14,6 +15,9 @@ const register = async (req, res) => {
         const newUser = new FormDataModel(req.body);
         await newUser.save();
         console.log(`User registered successfully: ${email}`);
+        const portfolio = new PortfolioModel({ userId: newUser._id, totalCash: 10000, totalAssets: 0, positions: [] });
+        await portfolio.save();
+        console.log(`Portfolio registered successfully: ${email}`);
         res.json(newUser);
     } catch (err) {
         console.error('Error during registration:', err.message);
