@@ -1,4 +1,5 @@
-import React, { useEffect, createContext, useState, useContext } from 'react';
+import { useEffect, createContext, useState, useContext } from 'react';
+import PropTypes from 'prop-types';
 
 const UserContext = createContext();
 
@@ -39,5 +40,9 @@ const useUser = () => {
   console.log('User context accessed:', context); // Debugging log
   return context;
 };
+
+UserProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+}
 
 export { UserProvider, useUser, UserContext };

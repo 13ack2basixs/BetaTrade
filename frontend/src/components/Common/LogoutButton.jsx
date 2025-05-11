@@ -19,7 +19,7 @@ const LogoutButton = () => {
     const navigate = useNavigate();
 
     const handleLogoutClick = () => {
-        
+      navigate("/");
     }
     return (
         <div>
