@@ -37,7 +37,7 @@ const RightSection = styled.div`
 const navItems = [
     { name: 'Dashboard', href: '/dashboard'},
     { name: 'Market', href: '/market' },
-    { name: 'News', href: '#'},
+    { name: 'News', href: '/news'},
     { name: 'Resources', href: '#'},
 ]
 

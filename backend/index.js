@@ -13,6 +13,7 @@ const marketRoutes = require('./routes/marketRoutes');
 const subscribeRoutes = require('./routes/subscribeRoutes');
 const companyProfileRoutes = require('./routes/companyProfileRoutes');
 const depositRoutes = require('./routes/depositRoutes');
+const newsRoutes = require('./routes/newsRoutes');
 
 const app = express();
 
@@ -27,5 +28,6 @@ app.use('/api/market', marketRoutes);
 app.use('/api', subscribeRoutes);
 app.use('/api/profile', companyProfileRoutes);
 app.use('/api', depositRoutes);
+app.use('/api/news', newsRoutes);
 
 module.exports = app;
