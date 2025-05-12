@@ -12,6 +12,7 @@ const portfolioRoutes = require('./routes/portfolioRoutes');
 const marketRoutes = require('./routes/marketRoutes');
 const subscribeRoutes = require('./routes/subscribeRoutes');
 const companyProfileRoutes = require('./routes/companyProfileRoutes');
+const depositRoutes = require('./routes/depositRoutes');
 
 const app = express();
 
@@ -21,9 +22,10 @@ app.options('*', cors(corsOptions));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/trade', tradeRoutes);
-app.use('/api/portfolio', portfolioRoutes);
+app.use('/api', portfolioRoutes);
 app.use('/api/market', marketRoutes);
 app.use('/api', subscribeRoutes);
 app.use('/api/profile', companyProfileRoutes);
+app.use('/api', depositRoutes);
 
 module.exports = app;

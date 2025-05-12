@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import LogoutButton from '../Common/LogoutButton';
+import DepositButton from '../Common/DepositButton';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -47,6 +48,7 @@ const UserHeader = () => {
               ))}
           </Nav>
           <RightSection>
+            <DepositButton />
             <LogoutButton />
           </RightSection>
         </HeaderContainer>
