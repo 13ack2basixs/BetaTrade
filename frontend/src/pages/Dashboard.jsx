@@ -46,10 +46,10 @@ const Dashboard = () => {
   return (
     <div>
       <AppLogo />
-      <UserHeader setRefresh={setRefresh} />
+      <UserHeader setRefresh={setRefresh} /> {/* Send prop to deposit funds button */}
       <Grid>
         <div style={{ gridArea: "total" }}>
-          <TotalBalanceCard refresh={refresh}/> {/*  */}
+          <TotalBalanceCard refresh={refresh}/> {/* Send prop to cashAndAssets API fetch */}
         </div>
 
         <div style={{ gridArea: "profitTarget" }}>

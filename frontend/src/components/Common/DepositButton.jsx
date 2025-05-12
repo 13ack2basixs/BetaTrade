@@ -31,7 +31,7 @@ const DepositButton = ({ setRefresh }) => {
 			await axios.post('http://localhost:3001/api/deposit', { userId: user._id });
 			alert("$10000 deposited!");
 			
-			handleRefresh();
+			handleRefresh(); // If button is clicked change state of refresh variable
 
 		} catch (err) {
 			console.error("Deposit failed:", err);

@@ -50,7 +50,7 @@ const UserHeader = ({ setRefresh }) => {
               ))}
           </Nav>
           <RightSection>
-            <DepositButton setRefresh={setRefresh}/>
+            <DepositButton setRefresh={setRefresh}/> {/* Continue sending props down */}
             <LogoutButton />
           </RightSection>
         </HeaderContainer>
