@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import axios from 'axios';
 import { useUser } from '../../context/UserContext';
+import PropTypes from 'prop-types';
 
 const StyledDepositButton = styled.button`
   background-color: #111111;
@@ -16,13 +17,22 @@ const StyledDepositButton = styled.button`
   }
 `;
 
-const DepositButton = () => {
+const DepositButton = ({ setRefresh }) => {
 	const { user } = useUser();
 
 	const handleDepositClick = async () => {
+
+		// Rotate between true and false
+		const handleRefresh = () => {
+			setRefresh(prev => !prev);
+		};
+
 		try {
-			await axios.post(`http://localhost:3001/api/deposit`, { userId: user._id });
+			await axios.post('http://localhost:3001/api/deposit', { userId: user._id });
 			alert("$10000 deposited!");
+			
+			handleRefresh();
+
 		} catch (err) {
 			console.error("Deposit failed:", err);
 		}
@@ -33,6 +43,10 @@ const DepositButton = () => {
 					<StyledDepositButton type="submit" onClick={handleDepositClick}>Deposit Funds</StyledDepositButton>
 			</div>
 	);
+};
+
+DepositButton.propTypes = {
+	setRefresh: PropTypes.func.isRequired,
 };
 
 export default DepositButton;

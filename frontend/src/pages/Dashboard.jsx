@@ -7,6 +7,7 @@ import GeneralCard from "../components/Dashboard/GeneralCard";
 import DiversificationCard from "../components/Dashboard/DiversificationCard";
 import OrderHistoryCard from "../components/Dashboard/OrderHistoryCard";
 import styled from 'styled-components';
+import { useState } from 'react';
 
 const Grid = styled.div`
   display: grid;
@@ -40,13 +41,15 @@ const Grid = styled.div`
 `;
 
 const Dashboard = () => {
+  const [refresh, setRefresh] = useState(false);
+
   return (
     <div>
       <AppLogo />
-      <UserHeader />
+      <UserHeader setRefresh={setRefresh} />
       <Grid>
         <div style={{ gridArea: "total" }}>
-          <TotalBalanceCard />
+          <TotalBalanceCard refresh={refresh}/> {/*  */}
         </div>
 
         <div style={{ gridArea: "profitTarget" }}>

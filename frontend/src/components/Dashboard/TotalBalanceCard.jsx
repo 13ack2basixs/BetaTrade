@@ -3,6 +3,7 @@ import placeholder from '../../assets/placeholderlinegraph.png';
 import { useState, useEffect } from 'react';
 import { useUser } from '../../context/UserContext';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
 const Card = styled.div`
   grid-column: 1 / 4;
@@ -13,7 +14,15 @@ const Card = styled.div`
   text-align: center;
 `;
 
-const TotalBalanceCard = () => {
+const CashAndAssets = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 100px;
+  justify-content: center;
+  font-size: 1.1em;
+`;
+
+const TotalBalanceCard = ({ refresh }) => {
   const { user } = useUser();
   const [totalCash, setTotalCash] = useState(0);
   const [totalAssets, setTotalAssets] = useState(0);
@@ -21,7 +30,7 @@ const TotalBalanceCard = () => {
   useEffect(() => {
     const fetchCashAndAssets = async () => {
       try {
-        const res = await axios.post(`http://localhost:3001/api/cash-and-assets`, { userId: user._id });
+        const res = await axios.post('http://localhost:3001/api/cash-and-assets', { userId: user._id });
         setTotalCash(res.data.totalCash);
         setTotalAssets(res.data.totalAssets);
       } catch (err) {
@@ -30,17 +39,23 @@ const TotalBalanceCard = () => {
     };
 
     fetchCashAndAssets();
-  }, [user]);
+  }, [user, refresh]); // If deposit funds button clicked fetch cash and assets again
 
   return (
     <Card>
       <h3>Total Balance</h3>
-      <span>Total Cash Value: {totalCash}</span>
-      <span>Total Asset Value: {totalAssets}</span>
+      <CashAndAssets>
+        <span>Total Cash Value: {totalCash.toFixed(2)}</span> 
+        <span>Total Asset Value: {totalAssets.toFixed(2)}</span>
+      </CashAndAssets>
       {/* Chart */}
       <img src={placeholder} alt='linegraph' style={{ maxWidth: '650px', width: '100%', height: 'auto' }} />
     </Card>
   );
+};
+
+TotalBalanceCard.propTypes = {
+  refresh: PropTypes.bool.isRequired,
 };
 
 export default TotalBalanceCard;

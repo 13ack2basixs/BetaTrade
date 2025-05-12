@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import LogoutButton from '../Common/LogoutButton';
 import DepositButton from '../Common/DepositButton';
+import PropTypes from 'prop-types';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -30,6 +31,7 @@ const Nav = styled.nav`
 const RightSection = styled.div`
   display: flex;
   justify-content: flex-end;
+  gap: 10px;
 `;
 
 const navItems = [
@@ -39,7 +41,7 @@ const navItems = [
     { name: 'Resources', href: '#'},
 ]
 
-const UserHeader = () => {
+const UserHeader = ({ setRefresh }) => {
     return (
         <HeaderContainer>
           <Nav>
@@ -48,11 +50,15 @@ const UserHeader = () => {
               ))}
           </Nav>
           <RightSection>
-            <DepositButton />
+            <DepositButton setRefresh={setRefresh}/>
             <LogoutButton />
           </RightSection>
         </HeaderContainer>
     )
-}
+};
+
+UserHeader.propTypes = {
+  setRefresh: PropTypes.func.isRequired,
+};
 
 export default UserHeader;
