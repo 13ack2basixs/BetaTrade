@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import SimilarNewsCard from './SimilarNewsCard';
 
 const Card = styled.a`
 	display: flex;
@@ -7,7 +8,6 @@ const Card = styled.a`
   border-radius: 1rem;
   padding: 1rem;
 	width: 90%;
-	height: 150px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.1);
   text-align: center;
 	margin: 20px;
@@ -25,7 +25,18 @@ const NewsFooter = styled.div`
 	align-items: center;
 	justify-content: center;
 	gap: 100px;
+`;
 
+const NewsDescription = styled.p`
+	margin-bottom: 5px;
+	margin-top: 20px;
+	font-size: 1.1rem;
+	text-decoration: underline;
+	text-underline-offset: 2px;
+`;
+
+const SimilarNewsContainer = styled.div`
+	display: flex;
 `;
 
 const NewsCard = ({ news }) => {
@@ -47,8 +58,14 @@ const NewsCard = ({ news }) => {
 			</ContentContainer>
 			<NewsFooter>
 				<span>Keywords: {news.keywords}</span>
-				<span>Date Published: {date.toLocaleString()}</span>	
-			</NewsFooter>	
+				<span>Date Published: {date.toLocaleString()}</span>
+			</NewsFooter>
+			{news.similar.length > 0 && <NewsDescription>News you may find similar:</NewsDescription>}
+			<SimilarNewsContainer>
+				{news.similar && news.similar.map((n, i) => (
+					<SimilarNewsCard key={i} news={n} />
+				))}
+			</SimilarNewsContainer>
 		</Card>
   );
 };
