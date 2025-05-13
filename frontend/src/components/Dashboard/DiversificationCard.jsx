@@ -15,9 +15,10 @@ const Card = styled.div`
 `;
 
 const ChartContainer = styled.div`
-  max-width: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
-  height: auto;
 `;
 
 const DiversificationCard = () => {
@@ -135,7 +136,9 @@ const DiversificationCard = () => {
     <Card>
       <h3>Sector Diversity</h3>
       <ChartContainer>
+      <div style={{ width: '500px' }}>
         <canvas ref={chartRef} />
+      </div>
       </ChartContainer>
     </Card>
   );
