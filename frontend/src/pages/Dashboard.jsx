@@ -44,7 +44,7 @@ const Dashboard = () => {
 
   return (
     <div>
-      {isMarketOpen && <MarketClosedModal />} {/* Show market closed modal if market closed */}
+      {!isMarketOpen && <MarketClosedModal />} {/* Show market closed modal if market closed */}
       <AppLogo />
       <UserHeader setRefresh={setRefresh} /> {/* Send prop to deposit funds button */}
       <Grid>
