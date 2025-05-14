@@ -1,6 +1,6 @@
 import AppLogo from "../components/Common/AppLogo";
 import UserHeader from "../components/Common/UserHeader";
-import TotalBalanceCard from "../components/Dashboard/TotalBalanceCard";
+import PnLPositionCard from "../components/Dashboard/PnLPositionCard";
 import ProfitTargetCard from "../components/Dashboard/ProfitTargetCard";
 import DailyPnlCard from "../components/Dashboard/DailyPnlCard";
 import DiversificationCard from "../components/Dashboard/DiversificationCard";
@@ -49,7 +49,7 @@ const Dashboard = () => {
       <UserHeader setRefresh={setRefresh} /> {/* Send prop to deposit funds button */}
       <Grid>
         <div style={{ gridArea: "total", height: "100%" }}>
-          <TotalBalanceCard refresh={refresh}/> {/* Send prop to cashAndAssets API fetch */}
+          <PnLPositionCard refresh={refresh}/> {/* Send prop to cashAndAssets API fetch */}
         </div>
 
         <div style={{ gridArea: "profitTarget" }}>

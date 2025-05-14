@@ -44,19 +44,19 @@ const DiversificationCard = () => {
   
   // { sector: price,... }
   const fetchUserTrades = async () => {
-      if (!user || !user._id) return;
+    if (!user || !user._id) return;
 
-      try {
-        const res = await axios.get('http://localhost:3001/api/trade/');
-        const allTrades = res.data;
-        const userTrades = allTrades.filter(t => t.userId === user._id);
-        const uniqueSymbols = [...new Set(userTrades.map(t => t.symbol))];
-        setTrades(userTrades);
-        setUniqueSymbols(uniqueSymbols);
-      } catch (err) {
-        console.error("Failed to fetch trades:", err);
-      }
-    };
+    try {
+      const res = await axios.get('http://localhost:3001/api/trade/');
+      const allTrades = res.data;
+      const userTrades = allTrades.filter(t => t.userId === user._id);
+      const uniqueSymbols = [...new Set(userTrades.map(t => t.symbol))];
+      setTrades(userTrades);
+      setUniqueSymbols(uniqueSymbols);
+    } catch (err) {
+      console.error("Failed to fetch trades:", err);
+    }
+  };
 
   const fetchProfiles = async (uniqueSymbols) => {
     const profiles = await Promise.all(

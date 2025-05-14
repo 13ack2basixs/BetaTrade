@@ -23,10 +23,12 @@ const CashAndAssets = styled.div`
   font-size: 1.1em;
 `;
 
-const TotalBalanceCard = ({ refresh }) => {
+const PnLPositionCard = ({ refresh }) => {
   const { user } = useUser();
   const [totalCash, setTotalCash] = useState(0);
   const [totalAssets, setTotalAssets] = useState(0);
+  const [positions, setPositions] = useState([]);
+  const [livePrices, setLivePrices] = useState({});
 
   useEffect(() => {
     const fetchCashAndAssets = async () => {
@@ -36,11 +38,29 @@ const TotalBalanceCard = ({ refresh }) => {
         setTotalAssets(res.data.totalAssets);
       } catch (err) {
         console.error("Error fetching total cash and assets:", err);
-      }
+      } 
     };
 
     fetchCashAndAssets();
   }, [user, refresh]); // If deposit funds button clicked fetch cash and assets again
+
+  useEffect(() => {
+    const fetchPortfolio = async () => {
+      const res = await axios.get(`http://localhost:3001/api/portfolio/${user._id}`);
+      setPositions(res.data.positions);
+    };
+    fetchPortfolio();
+  }, [user]);
+
+  // Fetch current prices every 3s
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const res = await axios.get(`http://localhost:3001/api/prices/${user._id}`);
+      setLivePrices(res.data);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [user]);
+  
 
   return (
     <Card>
@@ -49,14 +69,15 @@ const TotalBalanceCard = ({ refresh }) => {
         <span>Total Cash Value: ${totalCash.toFixed(2)}</span> 
         <span>Total Asset Value: ${totalAssets.toFixed(2)}</span>
       </CashAndAssets>
-      {/* Chart */}
+      <p>{JSON.stringify(positions)}</p>
+      <p>{JSON.stringify(livePrices)}</p>
       <img src={placeholder} alt='linegraph' style={{ maxWidth: '900px', width: '100%', height: 'auto' }} />
     </Card>
   );
 };
 
-TotalBalanceCard.propTypes = {
+PnLPositionCard.propTypes = {
   refresh: PropTypes.bool.isRequired,
 };
 
-export default TotalBalanceCard;
+export default PnLPositionCard;

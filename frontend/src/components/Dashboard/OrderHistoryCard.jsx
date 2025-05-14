@@ -56,7 +56,6 @@ const Cell = styled.td`
   border-bottom: 1px solid #eee;
 `;
 
-
 const OrderHistoryCard = () => {
   const { user } = useUser();
   const [trades, setTrades] = useState([]);
