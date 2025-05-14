@@ -12,6 +12,7 @@ const Card = styled.div`
   padding: 1.5rem;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
+  height: 93.5%;
 `;
 
 const CashAndAssets = styled.div`
@@ -49,7 +50,7 @@ const TotalBalanceCard = ({ refresh }) => {
         <span>Total Asset Value: ${totalAssets.toFixed(2)}</span>
       </CashAndAssets>
       {/* Chart */}
-      <img src={placeholder} alt='linegraph' style={{ maxWidth: '650px', width: '100%', height: 'auto' }} />
+      <img src={placeholder} alt='linegraph' style={{ maxWidth: '900px', width: '100%', height: 'auto' }} />
     </Card>
   );
 };

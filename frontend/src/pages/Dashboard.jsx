@@ -3,7 +3,6 @@ import UserHeader from "../components/Common/UserHeader";
 import TotalBalanceCard from "../components/Dashboard/TotalBalanceCard";
 import ProfitTargetCard from "../components/Dashboard/ProfitTargetCard";
 import DailyPnlCard from "../components/Dashboard/DailyPnlCard";
-import GeneralCard from "../components/Dashboard/GeneralCard";
 import DiversificationCard from "../components/Dashboard/DiversificationCard";
 import OrderHistoryCard from "../components/Dashboard/OrderHistoryCard";
 import styled from 'styled-components';
@@ -23,7 +22,7 @@ const Grid = styled.div`
     "total total total profitTarget dailyPnl"
     "total total total diversification diversification"
     "total total total diversification diversification"
-    "best worst profitFactor diversification diversification"
+    "total total total diversification diversification"
     "orderHistory orderHistory orderHistory orderHistory orderHistory";
 
   @media (max-width: 768px) {
@@ -32,9 +31,6 @@ const Grid = styled.div`
     "total"
     "profitTarget"
     "dailyPnl"
-    "best"
-    "worst"
-    "profitFactor"
     "diversification"
     "orderHistory";
   }
@@ -48,7 +44,7 @@ const Dashboard = () => {
       <AppLogo />
       <UserHeader setRefresh={setRefresh} /> {/* Send prop to deposit funds button */}
       <Grid>
-        <div style={{ gridArea: "total" }}>
+        <div style={{ gridArea: "total", height: "100%" }}>
           <TotalBalanceCard refresh={refresh}/> {/* Send prop to cashAndAssets API fetch */}
         </div>
 
@@ -60,19 +56,7 @@ const Dashboard = () => {
           <DailyPnlCard />
         </div>
 
-        <div style={{ gridArea: "best" }}>
-          <GeneralCard title="Best Trade" value={0} />
-        </div>
-
-        <div style={{ gridArea: "worst" }}>
-          <GeneralCard title="Worst Trade" value={0} />
-        </div>
-
-        <div style={{ gridArea: "profitFactor" }}>
-          <GeneralCard title="Profit Factor" value={0} />
-        </div>
-
-        <div style={{ gridArea: "diversification" }}>
+        <div style={{ gridArea: "diversification", height: "100%" }}>
           <DiversificationCard />
         </div>
 
