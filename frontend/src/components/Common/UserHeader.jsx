@@ -50,6 +50,7 @@ const UserHeader = ({ setRefresh }) => {
               ))}
           </Nav>
           <RightSection>
+            {/* Market Status Indicator */}
             <DepositButton setRefresh={setRefresh}/> {/* Continue sending props down */}
             <LogoutButton />
           </RightSection>

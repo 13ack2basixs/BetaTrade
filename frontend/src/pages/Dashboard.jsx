@@ -5,6 +5,8 @@ import ProfitTargetCard from "../components/Dashboard/ProfitTargetCard";
 import DailyPnlCard from "../components/Dashboard/DailyPnlCard";
 import DiversificationCard from "../components/Dashboard/DiversificationCard";
 import OrderHistoryCard from "../components/Dashboard/OrderHistoryCard";
+import MarketClosedModal from "../components/Common/MarketClosedModal";
+import useMarketStatus from "../hooks/useMarketStatus";
 import styled from 'styled-components';
 import { useState } from 'react';
 
@@ -38,9 +40,11 @@ const Grid = styled.div`
 
 const Dashboard = () => {
   const [refresh, setRefresh] = useState(false);
+  const isMarketOpen = useMarketStatus();
 
   return (
     <div>
+      {isMarketOpen && <MarketClosedModal />} {/* Show market closed modal if market closed */}
       <AppLogo />
       <UserHeader setRefresh={setRefresh} /> {/* Send prop to deposit funds button */}
       <Grid>
