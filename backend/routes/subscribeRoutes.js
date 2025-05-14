@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { subscribe } = require('../controllers/subscribeController');
+const { subscribe, subscribeMultiple } = require('../controllers/subscribeController');
 
-router.post('/subscribe', subscribe);
+router.post('/', subscribe);
+router.post('/multiple/:userId', subscribeMultiple);
 
 module.exports = router;
