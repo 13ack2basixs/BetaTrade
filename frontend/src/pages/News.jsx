@@ -1,6 +1,7 @@
 import AppLogo from "../components/Common/AppLogo";
 import UserHeader from "../components/Common/UserHeader";
 import NewsCard from "../components/News/NewsCard";
+import LoadButton from "../components/News/LoadButton";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
@@ -14,20 +15,37 @@ const NewsContainer = styled.div`
 
 const News = () => {
 	const [allNews, setAllNews] = useState([]);
+	const [page, setPage] = useState(1);
 
 	useEffect(() => {
-		const fetchLatestNews = async () => {
-			try {
-				const res = await axios.get('http://localhost:3001/api/news/latest');
-				const news = res.data.data;
-				setAllNews(news);
-			} catch (err) {
-				console.error("Error fetching latest news:", err);
-			}	
-		};
+    const fetchLatestNews = async () => {
+      try {
+        const res = await axios.get('http://localhost:3001/api/news/latest', {
+          params: { 
+            page: page,
+          }
+        });
+        const newNews = res.data.data;
+		
+        setAllNews(prevNews => {
+          const combined = [...prevNews, ...newNews];
+          
+          const seenNews = new Set();
+          const filtered = combined.filter(item => {
+            if (seenNews.has(item.uuid)) return false;
+            seenNews.add(item.uuid);
+            return true;
+          });
+
+          return filtered;
+        });
+      } catch (err) {
+        console.error("Error fetching latest news:", err);
+      }	
+    };
 
 		fetchLatestNews();
-	}, []);
+	}, [page]);
 
 	return (
 		<div>
@@ -38,6 +56,7 @@ const News = () => {
 					<NewsCard key={i} news={news}/>
 				))}
 			</NewsContainer>
+			<LoadButton setPage={setPage}/>
 		</div>
 	);
 };

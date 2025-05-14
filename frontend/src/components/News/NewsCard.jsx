@@ -57,7 +57,7 @@ const NewsCard = ({ news }) => {
 				<p>{news.snippet}</p>
 			</ContentContainer>
 			<NewsFooter>
-				<span>Keywords: {news.keywords}</span>
+				<span>Source: {news.source}</span>
 				<span>Date Published: {date.toLocaleString()}</span>
 			</NewsFooter>
 			{news.similar.length > 0 && <NewsDescription>News you may find similar:</NewsDescription>}

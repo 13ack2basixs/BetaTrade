@@ -45,8 +45,8 @@ const TotalBalanceCard = ({ refresh }) => {
     <Card>
       <h3>Total Balance</h3>
       <CashAndAssets>
-        <span>Total Cash Value: {totalCash.toFixed(2)}</span> 
-        <span>Total Asset Value: {totalAssets.toFixed(2)}</span>
+        <span>Total Cash Value: ${totalCash.toFixed(2)}</span> 
+        <span>Total Asset Value: ${totalAssets.toFixed(2)}</span>
       </CashAndAssets>
       {/* Chart */}
       <img src={placeholder} alt='linegraph' style={{ maxWidth: '650px', width: '100%', height: 'auto' }} />
