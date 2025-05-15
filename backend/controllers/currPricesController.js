@@ -10,7 +10,7 @@ const getPricesForUser = (req, res) => {
   for (const [symbol, price] of userPriceMap.entries()) {
     result[symbol] = price;
   }
-
+  console.log('Fetching prices for', userId, userPrices.get(userId));
   res.json(result);
 };
 

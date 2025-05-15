@@ -91,6 +91,8 @@ function subscribeToMultipleSymbol(userId, symbolsArr) {
 
   // Update
   userSubscriptions.set(userId, newSet);
+  console.log('Updated subscriptions for', userId, '->', [...newSet]);
+
 }
 
 
