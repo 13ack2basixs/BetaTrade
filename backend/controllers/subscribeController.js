@@ -1,5 +1,5 @@
 const { subscribeToSymbol, subscribeToMultipleSymbol } = require('../services/alpacaSocket');
-const PortfolioModel = require('../models/PortfolioModel');
+const PortfolioModel = require('../models/Portfolio');
 
 const subscribe = (req, res) => {
   const { symbol } = req.body;
