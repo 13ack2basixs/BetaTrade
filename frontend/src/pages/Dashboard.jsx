@@ -9,6 +9,7 @@ import MarketClosedModal from "../components/Common/MarketClosedModal";
 import useMarketStatus from "../hooks/useMarketStatus";
 import styled from 'styled-components';
 import { useState } from 'react';
+import { useUser } from "../context/UserContext";
 
 const Grid = styled.div`
   display: grid;
@@ -41,10 +42,12 @@ const Grid = styled.div`
 const Dashboard = () => {
   const [refresh, setRefresh] = useState(false);
   const isMarketOpen = useMarketStatus();
+  const { seenMarketModal, setSeenMarketModal } = useUser(); // Show modal once per user session
+
 
   return (
     <div>
-      {!isMarketOpen && <MarketClosedModal />} {/* Show market closed modal if market closed */}
+      {!isMarketOpen && !seenMarketModal && <MarketClosedModal setSeenMarketModal={setSeenMarketModal}/>} {/* Show market closed modal if market closed */}
       <AppLogo />
       <UserHeader setRefresh={setRefresh} /> {/* Send prop to deposit funds button */}
       <Grid>

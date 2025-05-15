@@ -5,13 +5,21 @@ const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [seenMarketModal, setSeenMarketModalState] = useState(() => {
+    return sessionStorage.getItem('seenMarketModal') === 'true';
+  });
 
   const login = (userData) => {
     console.log('Logging in user:', userData);
     setTimeout(() => {
-        setUser(userData);
-        localStorage.setItem('user', JSON.stringify(userData));
+      setUser(userData);
+      localStorage.setItem('user', JSON.stringify(userData));
+
+      // Reset modal visbility for new login
+      setSeenMarketModal(false);
+      sessionStorage.removeItem('seenMarketModal');
     }, 100); // 100ms delay
+    
   };
 
   useEffect(() => {
@@ -22,14 +30,24 @@ const UserProvider = ({ children }) => {
     }
   }, []);
 
+  // Wrapper fn that updates React state and session storage
+  const setSeenMarketModal = (value) => {
+    setSeenMarketModalState(value);
+    sessionStorage.setItem('seenMarketModal', value);
+  };
+
+  // Remove seenMarketModal and user session 
   const logout = () => {
     console.log('Logging out user');
     setUser(null);
+    setSeenMarketModal(false);
+    sessionStorage.removeItem('seenMarketModal');
     localStorage.removeItem('user');
   };
 
   return (
-    <UserContext.Provider value={{ user, login, logout }}>
+    // Pass down market modal state variables as props
+    <UserContext.Provider value={{ user, login, logout, seenMarketModal, setSeenMarketModal }}> 
       {children}
     </UserContext.Provider>
   );
@@ -37,7 +55,6 @@ const UserProvider = ({ children }) => {
 
 const useUser = () => {
   const context = useContext(UserContext);
-  console.log('User context accessed:', context); // Debugging log
   return context;
 };
 

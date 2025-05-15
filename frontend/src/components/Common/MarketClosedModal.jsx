@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { X } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 const Backdrop = styled.div`
   position: fixed;
@@ -39,17 +40,22 @@ const RotatedX = styled(X)`
   }
 `;
 
-const MarketClosedModal = () => {
-  const [isClosed, setIsClosed] = useState(false);
+const MarketClosedModal = ({ setSeenMarketModal }) => {
+  const [isModalClosed, setIsModalClosed] = useState(false);
 
-  if (isClosed) {
-    return null;
-  }
+  // Marks modal as seen in that user session
+  useEffect(() => {
+    if (isModalClosed) {
+      setSeenMarketModal(true);
+    }
+  }, [isModalClosed, setSeenMarketModal]);
+  
+  if (isModalClosed) return null;
 
 	return (
     <Backdrop>
       <Modal>
-        <CloseButton><RotatedX onClick={() => setIsClosed(true)}/></CloseButton>
+        <CloseButton><RotatedX onClick={() => setIsModalClosed(true)}/></CloseButton>
         <h2>Market Closed</h2>
         <p>The market is currently closed. Trading hours are from Monday to Friday, 9:30AM to 4:00PM (EST) / 10:30PM to 5:00AM (SGT)</p>
         <span>Click the following links to learn more:</span> <br />
@@ -58,6 +64,10 @@ const MarketClosedModal = () => {
       </Modal>
     </Backdrop>
 	)
+};
+
+MarketClosedModal.propTypes = {
+  setSeenMarketModal: PropTypes.func.isRequired,
 };
 
 export default MarketClosedModal;
