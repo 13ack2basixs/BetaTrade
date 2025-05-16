@@ -5,9 +5,17 @@ const useMarketStatus = () => {
   const [marketOpen, setMarketOpen] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost:3001/api/market/status')
-      .then(res => setMarketOpen(res.data.is_open))
-      .catch(console.error);
+    const fetchMarketStatus = async () => {
+      try {
+        const res = await axios.get('http://localhost:3001/api/market/status');
+        setMarketOpen(res.data.is_open);
+      } catch (err) {
+        console.error('Failed to fetch market status:', err);
+        setMarketOpen(true);
+      }
+    };
+    
+    fetchMarketStatus();
   }, []);
 
   return marketOpen;

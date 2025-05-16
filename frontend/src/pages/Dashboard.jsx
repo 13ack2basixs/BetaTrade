@@ -44,6 +44,9 @@ const Dashboard = () => {
   const isMarketOpen = useMarketStatus();
   const { seenMarketModal, setSeenMarketModal } = useUser(); // Show modal once per user session
 
+  if (isMarketOpen === null) {
+    return null;
+  }  
 
   return (
     <div>
