@@ -1,4 +1,4 @@
-const allowedOrigins = ['http://localhost:5173', 'https://betatrade-sxbm.onrender.com'];
+const allowedOrigins = ['http://localhost:5173', 'https://betatrade-sxbm.onrender.com', 'https://betatrade.vercel.app'];
 
 const corsOptions = {
     origin: (origin, callback) => {
