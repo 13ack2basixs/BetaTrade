@@ -3,6 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import Chart from 'chart.js/auto';
 import { useUser } from '../../context/UserContext';
+import { baseUrl } from '../../api/base';
 
 const Card = styled.div`
   grid-column: 4 / 6;
@@ -47,7 +48,7 @@ const DiversificationCard = () => {
     if (!user || !user._id) return;
 
     try {
-      const res = await axios.get('http://localhost:3001/api/trade/');
+      const res = await axios.get(`${baseUrl}/api/trade/`);
       const allTrades = res.data;
       const userTrades = allTrades.filter(t => t.userId === user._id);
       const uniqueSymbols = [...new Set(userTrades.map(t => t.symbol))];
@@ -61,7 +62,7 @@ const DiversificationCard = () => {
   const fetchProfiles = async (uniqueSymbols) => {
     const profiles = await Promise.all(
       uniqueSymbols.map(async (symbol) => {
-        const res = await axios.get(`http://localhost:3001/api/profile/${symbol}`);
+        const res = await axios.get(`${baseUrl}/api/profile/${symbol}`);
         return {
           symbol,
           sector: res.data[0]?.sector || 'Unknown',

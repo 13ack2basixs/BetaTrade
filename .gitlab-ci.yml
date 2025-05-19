@@ -1,0 +1,33 @@
+stages:
+  - install
+  - build
+
+cache:
+  paths:
+    - backend/node_modules/
+    - frontend/node_modules/
+
+install_dependencies:
+  stage: install
+  script:
+    - npm install
+  only:
+    - main
+
+build_frontend:
+  stage: build
+  script:
+    - cd frontend
+    - npm install
+    - npm run build
+  only:
+    - main
+
+build_backend:
+  stage: build
+  script:
+    - cd backend
+    - npm install
+    - npm run build || echo "No build step, skipped"
+  only:
+    - main

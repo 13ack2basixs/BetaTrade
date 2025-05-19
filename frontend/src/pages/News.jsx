@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { RotatingLines } from 'react-loader-spinner';
+import { baseUrl } from "../api/base";
 
 const NewsContainer = styled.div`
 	display: flex;
@@ -28,7 +29,7 @@ const News = () => {
     const fetchLatestNews = async () => {
 			setIsLoading(true);
       try {
-        const res = await axios.get('http://localhost:3001/api/news/latest', {
+        const res = await axios.get(`${baseUrl}/api/news/latest`, {
           params: { 
             page: page,
           }

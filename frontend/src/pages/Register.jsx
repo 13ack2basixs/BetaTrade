@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { baseUrl } from '../api/base';
 
 const RegisterModal = styled.div`
   min-height: 100vh;
@@ -95,7 +96,7 @@ const Register = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         
-        axios.post( 'http://localhost:3001/api/auth/register', {name, email, password})
+        axios.post( `${baseUrl}/api/auth/register`, {name, email, password})
         .then(result => {
             console.log(result);
             if(result.data === "Already registered"){

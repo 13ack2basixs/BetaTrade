@@ -2,6 +2,7 @@ import styled from "styled-components";
 import axios from 'axios';
 import { useUser } from '../../context/UserContext';
 import { useState, useEffect } from 'react';
+import { baseUrl } from '../../api/base';
 
 const Card = styled.div`
   background: #fff;
@@ -65,7 +66,7 @@ const OrderHistoryCard = () => {
       if (!user || !user._id) return;
 
       try {
-        const res = await axios.get('http://localhost:3001/api/trade/');
+        const res = await axios.get(`${baseUrl}/api/trade/`);
         const allTrades = res.data;
         const userTrades = allTrades.filter(t => t.userId === user._id);
         setTrades(userTrades);

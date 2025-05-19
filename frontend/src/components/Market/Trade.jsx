@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useUser } from '../../context/UserContext';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { baseUrl } from '../../api/base';
 
 const OrderForm = styled.form`
   
@@ -105,7 +106,7 @@ const Trade = ({ symbol, currentPrice }) => {
         });
 
         try {
-            const response = await axios.post('http://localhost:3001/api/trade', { 
+            const response = await axios.post(`${baseUrl}/api/trade`, { 
                 ...formData, 
                 userId: user._id,
                 price: currentPrice

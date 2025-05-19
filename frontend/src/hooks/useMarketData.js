@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
+import { baseUrl } from '../api/base';
 
 const useMarketData = (symbol, timeframe, marketOpen, renderChart) => {
     const [data, setData] = useState([]);
@@ -8,7 +9,7 @@ const useMarketData = (symbol, timeframe, marketOpen, renderChart) => {
 
     useEffect(() => {
         if (symbol) {
-            axios.get(`http://localhost:3001/api/market/historical/${symbol}?timeframe=${timeframe}`)
+            axios.get(`${baseUrl}/api/market/historical/${symbol}?timeframe=${timeframe}`)
                 .then(response => {
                     const bars = response.data.bars[symbol] || [];
                     setData(bars);
@@ -18,7 +19,7 @@ const useMarketData = (symbol, timeframe, marketOpen, renderChart) => {
                 });
 
             if (timeframe === 'live') {
-                axios.post('http://localhost:3001/api/subscribe', { symbol }).catch(console.error);
+                axios.post(`${baseUrl}/api/subscribe`, { symbol }).catch(console.error);
             }
         }
     }, [symbol, timeframe]);
@@ -26,7 +27,8 @@ const useMarketData = (symbol, timeframe, marketOpen, renderChart) => {
     useEffect(() => {
         if (timeframe !== 'live' || !marketOpen || !symbol) return;
 
-        const socket = new WebSocket('ws://localhost:3001');
+        const wsUrl = baseUrl.replace(/^http/, 'ws');
+        const socket = new WebSocket(`${wsUrl}/ws`);
         socketRef.current = socket;
 
         socket.onmessage = (event) => {

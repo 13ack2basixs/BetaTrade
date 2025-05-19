@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { useUser } from '../context/UserContext'; // Import useUser
 import styled from 'styled-components';
+import { baseUrl } from '../api/base';
  
 const LoginModal = styled.div`
   min-height: 100vh;
@@ -96,7 +97,7 @@ const Login = () => {
         event.preventDefault();
         
         try {
-            const response = await axios.post('http://localhost:3001/api/auth/login', { email, password });
+            const response = await axios.post(`${baseUrl}/api/auth/login`, { email, password });
             console.log(response);
             if (response.status === 200 && response.data.status === "Success") {
                 console.log("Login Success");

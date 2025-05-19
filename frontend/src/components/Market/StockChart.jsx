@@ -6,6 +6,7 @@ import SearchBar from './SearchBar';
 import Trade from './Trade';
 import styled from 'styled-components';
 import useMarketData from '../../hooks/useMarketData';
+import { baseUrl } from '../../api/base';
 
 const OuterContainer = styled.div`
   display: flex;
@@ -68,7 +69,7 @@ const StockChart = () => {
 
   const fetchStockData = async (ticker) => {
     try {
-      const response = await axios.get(`http://localhost:3001/api/market/historical/${ticker}`);
+      const response = await axios.get(`${baseUrl}/api/market/historical/${ticker}`);
       const bars = response.data.bars[ticker] || [];
       renderChart(bars, ticker);
       console.log("Stock chart rendered");
@@ -79,7 +80,7 @@ const StockChart = () => {
 
   const fetchTickerProfile = async (ticker) => {
     try {
-      const response = await axios.get(`http://localhost:3001/api/profile/${ticker}`);
+      const response = await axios.get(`${baseUrl}/api/profile/${ticker}`);
       const profile = response.data[0];
       setProfile(profile);
       console.log("Ticker profile rendered");

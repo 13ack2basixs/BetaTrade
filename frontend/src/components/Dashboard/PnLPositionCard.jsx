@@ -5,6 +5,7 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
+import { baseUrl } from '../../api/base';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
@@ -39,7 +40,7 @@ const PnLPositionCard = ({ refresh }) => {
 
     const fetchCashAndAssets = async () => {
       try {
-        const res = await axios.post('http://localhost:3001/api/cash-and-assets', { userId: user._id });
+        const res = await axios.post(`${baseUrl}/api/cash-and-assets`, { userId: user._id });
         setTotalCash(res.data.totalCash);
         setTotalAssets(res.data.totalAssets);
       } catch (err) {
@@ -54,7 +55,7 @@ const PnLPositionCard = ({ refresh }) => {
     if (!user || !user._id) return;
 
     const fetchPortfolio = async () => {
-      const res = await axios.get(`http://localhost:3001/api/portfolio/${user._id}`);
+      const res = await axios.get(`${baseUrl}api/portfolio/${user._id}`);
       setPositions(res.data.positions);
     };
 
@@ -67,7 +68,7 @@ const PnLPositionCard = ({ refresh }) => {
     const subscribeToSymbols = async () => {
       if (!user || !user._id) return;
       try {
-        await axios.post(`http://localhost:3001/api/subscribe/multiple/${user._id}`);
+        await axios.post(`${baseUrl}/api/subscribe/multiple/${user._id}`);
       } catch (err) {
         console.error("Failed to subscribe to symbols:", err);
       }
@@ -82,7 +83,7 @@ const PnLPositionCard = ({ refresh }) => {
     if (!user || !user._id) return;
 
     const interval = setInterval(async () => {
-      const res = await axios.get(`http://localhost:3001/api/prices/${user._id}`);
+      const res = await axios.get(`${baseUrl}/api/prices/${user._id}`);
       setLivePrices(res.data);
     }, 3000);
 
