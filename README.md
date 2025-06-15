@@ -30,6 +30,9 @@ Track your holdings, monitor performance, and visualize growth over time.
 ✅ **Order History**  
 Review all past trades and analyze your decisions to improve.
 
+✅ **News Feed**  
+Stay informed with live feed of latest financial and market news, helping you to make better trade decisions based on current events.
+
 ---
 
 ## ⚙️ How It Works
@@ -45,7 +48,7 @@ Review all past trades and analyze your decisions to improve.
 
 ---
 
-## Usage
+## 🌐 Usage
 
 Feel free to try it out and explore the app. Do let me know if you have any suggestions or possible improvements I can work on!
 
