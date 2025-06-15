@@ -52,4 +52,7 @@ Stay informed with live feed of latest financial and market news, helping you to
 
 Feel free to try it out and explore the app. Do let me know if you have any suggestions or possible improvements I can work on!
 
+> ⚠️ **Note:** The app is hosted on **Vercel**, which may take a few minutes to start up if it hasn’t been used recently (cold start).  
+> If you appear to be stuck on the **login/register page**, please wait a few moments — the app will load shortly once the backend spins up.
+
 🔗 Live App: [https://betatrade.vercel.app](https://betatrade.vercel.app)
